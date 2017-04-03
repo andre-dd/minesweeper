@@ -44,7 +44,7 @@ public class BoardPanelMouseListener implements MouseListener {
             controlPanelMediator.updateGameResult("Game lost!");
         }
 
-        if (board.onlyBombsLeftOnBoard()) {
+        if (board.areOnlyBombsLeftOnBoard()) {
             controlPanelMediator.updateGameResult("Game won!");
         }
 

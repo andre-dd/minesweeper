@@ -45,6 +45,10 @@ public class Board {
         return fields;
     }
 
+    public void reset() {
+        init();
+    }
+
     /**
      *
      * @param row int
@@ -64,14 +68,10 @@ public class Board {
         }
     }
 
-    public void reset() {
-        init();
-    }
-
     /**
      * @return boolean
      */
-    public boolean onlyBombsLeftOnBoard() {
+    public boolean areOnlyBombsLeftOnBoard() {
         int bombCount = 0;
         int UnRevealCount = 0;
 
@@ -125,6 +125,30 @@ public class Board {
         fields[row][column].setMarked(true);
     }
 
+    private void init() {
+        Random random = new Random();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                fields[i][j] = new Field(false);
+
+                if (85 < random.nextInt(100)) {
+                    fields[i][j].setBomb(true);
+                }
+            }
+        }
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                fields[i][j].setNeighborBombs(countNeighborBombs(i, j));
+            }
+        }
+    }
+
+    /**
+     * @param row int
+     * @param column int
+     */
     private void revealAdjacentFields(int row, int column) {
         for (int[] neighborCell: neighborFields) {
             int x = row + neighborCell[0];
@@ -148,26 +172,6 @@ public class Board {
             if (0 == field.getNeighborBombs() && !field.isRevealed()) {
                 field.setRevealed(true);
                 revealAdjacentFields(x, y);
-            }
-        }
-    }
-
-    private void init() {
-        Random random = new Random();
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                fields[i][j] = new Field(false);
-
-                if (85 < random.nextInt(100)) {
-                    fields[i][j].setBomb(true);
-                }
-            }
-        }
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                fields[i][j].setNeighborBombs(countNeighborBombs(i, j));
             }
         }
     }
