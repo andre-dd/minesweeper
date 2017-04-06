@@ -73,12 +73,12 @@ public class Board {
      */
     public boolean areOnlyBombsLeftOnBoard() {
         int bombCount = 0;
-        int UnRevealCount = 0;
+        int unRevealedFieldsCount = 0;
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 if (!fields[i][j].isRevealed()) {
-                    UnRevealCount++;
+                    unRevealedFieldsCount++;
                 }
 
                 if (fields[i][j].isBomb()) {
@@ -87,7 +87,7 @@ public class Board {
             }
         }
 
-        return bombCount == UnRevealCount;
+        return bombCount == unRevealedFieldsCount;
     }
 
     /**
@@ -154,7 +154,7 @@ public class Board {
             int x = row + neighborCell[0];
             int y = column + neighborCell[1];
 
-            if (!(x >= 0 && x < rows && y >= 0 && y < columns)) {
+            if (isOutOfBounds(x, y)) {
                 continue;
             }
 
@@ -189,7 +189,7 @@ public class Board {
             int x = i + neighborCell[0];
             int y = j + neighborCell[1];
 
-            if (!(x >= 0 && x < rows && y >= 0 && y < columns)) {
+            if (isOutOfBounds(x, y)) {
                 continue;
             }
 
@@ -199,5 +199,15 @@ public class Board {
         }
 
         return neighborBombCount;
+    }
+
+    /**
+     * @param x int
+     * @param y int
+     *
+     * @return boolean
+     */
+    private boolean isOutOfBounds(int x, int y) {
+        return !(x >= 0 && x < rows && y >= 0 && y < columns);
     }
 }
